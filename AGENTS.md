@@ -1,4 +1,7 @@
 # Repository Guidance
 
-- This repository has not been scaffolded yet: there is no verified language, architecture, or build/test/lint command. Do not invent them.
-- Once project files are added, update this file from executable sources of truth (manifests, scripts, tool configs, and CI) and remove this placeholder guidance.
+- This is a Maven project targeting Java 21, as configured in `pom.xml`.
+- Production source code lives under `src/main/java`; the application entry point is `com.taskmanager.cli.Main`.
+- Build the project with `mvn compile` or package it with `mvn package`.
+- Run the current entry point after compiling with `java -cp target/classes com.taskmanager.cli.Main`.
+- There are currently no dependencies, automated tests, lint configuration, or task-management features.
