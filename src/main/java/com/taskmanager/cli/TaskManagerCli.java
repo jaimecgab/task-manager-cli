@@ -1,5 +1,5 @@
 package com.taskmanager.cli;
-
+import java.util.Locale;
 import com.taskmanager.model.Task;
 import com.taskmanager.service.TaskNotFoundException;
 import com.taskmanager.service.TaskService;
@@ -37,7 +37,7 @@ public final class TaskManagerCli {
             }
 
             String[] parts = line.split("\\s+", 2);
-            String command = parts[0].toLowerCase();
+            String command = parts[0].toLowerCase(Locale.ROOT);
             String argument = parts.length == 2 ? parts[1].strip() : "";
 
             try {
@@ -46,12 +46,16 @@ public final class TaskManagerCli {
                     case "list" -> listTasks(argument);
                     case "complete" -> completeTask(argument);
                     case "delete" -> deleteTask(argument);
-                    case "help" -> printHelp();
-                    case "exit" -> {
-                        output.println("Goodbye.");
-                        return;
-                    }
-                    default -> output.println("Error: Unknown command. Type 'help' to see available commands.");
+                    case "help" -> {
+ 				 requireNoArgument("help", argument);
+   				 printHelp();
+			}
+		    case "exit" -> {
+		    requireNoArgument("exit", argument);
+		    output.println("Goodbye.");
+		    return;
+			}
+                 default -> output.println("Error: Unknown command. Type 'help' to see available commands.");
                 }
             } catch (IllegalArgumentException | TaskNotFoundException exception) {
                 output.println("Error: " + exception.getMessage());

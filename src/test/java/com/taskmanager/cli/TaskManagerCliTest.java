@@ -49,6 +49,36 @@ class TaskManagerCliTest {
         assertTrue(result.contains("Goodbye."));
     }
 
+	@Test
+	 void rejectsArgumentsForHelpAndExit() {
+    		String result = runCli("""
+            	help extra
+            	exit extra
+            	exit
+            	""");
+
+    	assertTrue(result.contains("Error: Usage: help"));
+    	assertTrue(result.contains("Error: Usage: exit"));
+    	assertTrue(result.contains("Goodbye."));
+	}
+
+	@Test
+	void handlesUppercaseCommandsIndependentlyOfSystemLocale() {
+	    String result = runCli("""
+            CREATE Learn Java
+            LIST
+            COMPLETE 1
+            LIST
+            EXIT
+            """);
+
+    assertTrue(result.contains("Created task 1."));
+    assertTrue(result.contains("1. [ ] Learn Java"));
+    assertTrue(result.contains("Completed task 1."));
+    assertTrue(result.contains("1. [x] Learn Java"));
+    assertTrue(result.contains("Goodbye."));
+	}
+
     private String runCli(String commands) {
         ByteArrayInputStream input = new ByteArrayInputStream(commands.getBytes(StandardCharsets.UTF_8));
         ByteArrayOutputStream output = new ByteArrayOutputStream();
